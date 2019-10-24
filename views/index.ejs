@@ -1,0 +1,23 @@
+<%- include('parts/header'); %>
+
+
+<form action="">
+
+    <input type="text" placeholder="Add to list">
+    <input type="submit" value="Submit">
+</form>
+
+
+<ul>
+
+    <% todo.forEach(function(list){ %>
+        <%- include('parts/todolist', {todoItem: list}); %>
+      <% }); %>
+
+</ul>
+
+
+
+
+
+<%- include('parts/footer'); %>
