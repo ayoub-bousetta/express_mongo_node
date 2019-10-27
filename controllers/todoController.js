@@ -21,13 +21,13 @@ mongoose.connect('mongodb://ayoub:123456789.@cluster0-shard-00-00-dccmk.mongodb.
 
    const todoSchema = new Schema({
     id: ObjectId,
-    title: String,
+    item: String,
    
   });
-  const todoit = mongoose.model('todo', todoSchema);
+  const todoModel = mongoose.model('todo', todoSchema);
 
 
-var data =[{item:'Eat dinner'},{item:'walk'},{item:'Eat dinner'}]
+//var data =[{item:'Eat dinner'},{item:'walk'},{item:'Eat dinner'}]
 
 //App from app.js
 module.exports  = function(app){
@@ -37,28 +37,42 @@ module.exports  = function(app){
 
 
 app.get('/todo',function(req,res){
+//get data from DB
+todoModel.find({},function(err,data){
+
+    if(err) throw err
 
     res.render('index',{todo : data})
+
+}) 
     
 })
 
 
 app.post('/todo',urlencodedParser,function(req,res){
+//get data from view and save it
 
-    data.push(req.body)
-   
+var newTodo = todoModel(req.body).save(function(err,data){
+
+    if(err) throw err
     res.json(data)
+})
+   // data.push(req.body)
+   
+    
     
 })
 
 
 app.delete('/todo/:item',function(req,res){
 
-    data = data.filter(function(todo){
-        return todo.item.replace(/ /g, "-") !== req.params.item
-    })
+    console
 
-    res.json(data)
+    todoModel.find({item: req.params.item.replace(/ /g, "-")}).remove(function(err,data){
+
+        if(err) throw err
+        res.json(data)
+    })
     
 })
 
